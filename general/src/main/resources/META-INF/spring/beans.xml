@@ -1,0 +1,20 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd">
+
+  <import resource="classpath:META-INF/cxf/cxf.xml"/>
+
+  <bean id="jaxrsroute" class="org.chies.soa.camel.route.JAXRSRoute"/>
+  <bean id="jaxwsroute" class="org.chies.soa.camel.route.JAXWSRoute"/>
+
+  <camelContext xmlns="http://camel.apache.org/schema/spring">
+    <routeBuilder ref="jaxrsroute"/>
+    <routeBuilder ref="jaxwsroute"/>
+  </camelContext>
+
+</beans>
