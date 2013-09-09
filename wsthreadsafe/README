@@ -1,1 +1,18 @@
-hi
+The goal of this project is prove that the non-thread-safe behaviour of jax-ws specification, although there are some implementations that are thread safe.
+
+The project (war) has a webservice SOAP through URL: http://localhost:8080/wsthreadsafe/myservice?wsdl
+
+I also built a REST service that creates a singleton proxy to the SOAP service, and calls the three soap methods.
+This REST service is available in: http://localhost:8080/wsthreadsafe/loadtest
+
+If we call this REST service in a load test (Jmeter for example) we are going to face some ClassCast exceptions like this:
+
+java.lang.ClassCastException: org.rchies.GetCarResponse cannot be cast to org.rchies.GetHouseResponse
+        at org.rchies.GetHouseResponse$JaxbAccessorF__return.get(FieldAccessor_Ref.java:52)
+        at com.sun.xml.bind.v2.runtime.reflect.Accessor.getUnadapted(Accessor.java:147)
+        at com.sun.xml.bind.v2.runtime.JAXBContextImpl$7.get(JAXBContextImpl.java:958)
+        at org.jboss.ws.metadata.accessor.JAXBAccessor.get(JAXBAccessor.java:48)
+
+This is because our soap service proxy is a singleton, and as the javax.ws.Service is not thread-safe the soap response of some request are delivered to threads that are requesting other response type.
+
+Check it out !
